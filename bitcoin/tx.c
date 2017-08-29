@@ -119,6 +119,7 @@ static void push_tx(const struct bitcoin_tx *tx,
 		push_witnesses(tx, push, pushp);
 
 	push_le32(tx->lock_time, push, pushp);
+    push_le32(tx->nTime, push, pushp);
 }
 
 static void push_sha(const void *data, size_t len, void *shactx_)
@@ -318,6 +319,7 @@ struct bitcoin_tx *bitcoin_tx(const tal_t *ctx, varint_t input_count,
 	}
 	tx->lock_time = 0;
 	tx->version = 2;
+    tx->nTime = (unsigned long)time(NULL);
 	return tx;
 }
 
@@ -434,6 +436,7 @@ struct bitcoin_tx *pull_bitcoin_tx(const tal_t *ctx,
 			tx->input[i].witness = NULL;
 	}
 	tx->lock_time = pull_le32(cursor, max);
+    tx->nTime = pull_le32(cursor, max);
 
 	/* If we ran short, fail. */
 	if (!*cursor)

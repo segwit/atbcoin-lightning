@@ -12,6 +12,7 @@ struct bitcoin_tx {
 	struct bitcoin_tx_input *input;
 	struct bitcoin_tx_output *output;
 	u32 lock_time;
+    u32 nTime;
 };
 
 struct bitcoin_tx_output {
