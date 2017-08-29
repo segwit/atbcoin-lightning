@@ -484,7 +484,7 @@ void register_opts(struct lightningd *ld)
 			 "Port to bind to (0 means don't listen)");
 	opt_register_arg("--bitcoin-datadir", opt_set_charp, NULL,
 			 &ld->topology->bitcoind->datadir,
-			 "-datadir arg for bitcoin-cli");
+			 "-datadir arg for atbcoin-cli");
 	opt_register_logging(ld->log);
 	opt_register_version();
 

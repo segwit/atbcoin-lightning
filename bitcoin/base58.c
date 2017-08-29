@@ -45,7 +45,7 @@ char *bitcoin_to_base58(const tal_t *ctx, bool test_net,
 char *p2sh_to_base58(const tal_t *ctx, bool test_net,
 		     const struct ripemd160 *p2sh)
 {
-	return to_base58(ctx, test_net ? 196 : 5, p2sh);
+    return to_base58(ctx, test_net ? 196 : 83, p2sh);
 }
 
 static bool from_base58(u8 *version,
@@ -95,7 +95,7 @@ bool p2sh_from_base58(bool *test_net,
 
 	if (version == 196)
 		*test_net = true;
-	else if (version == 5)
+    else if (version == 83)
 		*test_net = false;
 	else
 		return false;

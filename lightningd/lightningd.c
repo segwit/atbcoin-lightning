@@ -279,4 +279,3 @@ int main(int argc, char *argv[])
 	opt_free_table();
 	return 0;
 }
-

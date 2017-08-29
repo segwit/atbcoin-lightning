@@ -25,6 +25,20 @@ struct bitcoin_block *bitcoin_block_from_hex(const tal_t *ctx,
 		return tal_free(b);
 
 	pull(&p, &len, &b->hdr, sizeof(b->hdr));
+
+    // vchSig
+    u64 xx = pull_varint(&p, &len);
+    b->vchSig = tal_arr(b, u8, xx);
+    pull(&p, &len, &b->vchSig, tal_len(b->vchSig));
+
+    // fStake
+    pull(&p, &len, &b->fStake, sizeof(b->fStake));
+    // prevoutStake
+    pull(&p, &len, &b->prev_stake_hash, sizeof(b->prev_stake_hash));
+    pull(&p, &len, &b->prev_stake_n, sizeof(b->prev_stake_n));
+    // nStakeTime
+    pull(&p, &len, &b->stake_time, sizeof(b->stake_time));
+
 	num = pull_varint(&p, &len);
 	b->tx = tal_arr(b, struct bitcoin_tx *, num);
 	for (i = 0; i < num; i++)

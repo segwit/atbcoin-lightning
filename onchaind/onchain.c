@@ -349,7 +349,7 @@ static bool all_irrevocably_resolved(struct tracked_output **outs)
 	size_t i;
 
 	for (i = 0; i < tal_count(outs); i++) {
-		if (outs[i]->resolved && outs[i]->resolved->depth < 100)
+        if (outs[i]->resolved && outs[i]->resolved->depth < 5)
 			return false;
 	}
 	return true;

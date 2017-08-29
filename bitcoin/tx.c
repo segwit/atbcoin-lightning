@@ -10,6 +10,7 @@
 #include <ccan/str/hex/hex.h>
 #include <common/type_to_string.h>
 #include <stdio.h>
+#include <time.h>
 
 #define SEGREGATED_WITNESS_FLAG 0x1
 
@@ -19,7 +20,7 @@ static void push_tx_input(const struct bitcoin_tx_input *input,
 	push(&input->txid, sizeof(input->txid), pushp);
 	push_le32(input->index, push, pushp);
 	push_varint_blob(input->script, push, pushp);
-	push_le32(input->sequence_number, push, pushp);
+    push_le32(input->sequence_number, push, pushp);\
 }
 
 static void push_tx_output(const struct bitcoin_tx_output *output,
@@ -118,6 +119,7 @@ static void push_tx(const struct bitcoin_tx *tx,
 		push_witnesses(tx, push, pushp);
 
 	push_le32(tx->lock_time, push, pushp);
+    push_le32(tx->nTime, push, pushp);
 }
 
 static void push_sha(const void *data, size_t len, void *shactx_)
@@ -216,7 +218,7 @@ static void hash_for_segwit(struct sha256_ctx *ctx,
 	push_sha(&h, sizeof(h), ctx);
 
 	/*     9. nLocktime of the transaction (4-byte little endian) */
-	push_le32(tx->lock_time, push_sha, ctx);
+    push_le32(tx->lock_time, push_sha, ctx);
 }
 
 void sha256_tx_for_sig(struct sha256_double *h, const struct bitcoin_tx *tx,
@@ -280,9 +282,24 @@ void bitcoin_txid(const struct bitcoin_tx *tx, struct sha256_double *txid)
 {
 	struct sha256_ctx ctx = SHA256_INIT;
 
+
+    size_t i;
 	/* For TXID, we never use extended form. */
-	push_tx(tx, push_sha, &ctx, false);
-	sha256_double_done(&ctx, txid);
+    //push_tx(tx, push_sha, &ctx, false);
+
+    push_le32(tx->version, push_sha, &ctx);
+    push_varint(tal_count(tx->input), push_sha, &ctx);
+    for (i = 0; i < tal_count(tx->input); i++)
+        push_tx_input(&tx->input[i], push_sha, &ctx);
+
+    push_varint(tal_count(tx->output), push_sha, &ctx);
+    for (i = 0; i < tal_count(tx->output); i++)
+        push_tx_output(&tx->output[i], push_sha, &ctx);
+
+    push_le32(tx->lock_time, push_sha, &ctx);
+
+    //push_tx(tx, push_sha, &ctx, false);
+    sha256_double_done(&ctx, txid);
 }
 
 struct bitcoin_tx *bitcoin_tx(const tal_t *ctx, varint_t input_count,
@@ -302,6 +319,7 @@ struct bitcoin_tx *bitcoin_tx(const tal_t *ctx, varint_t input_count,
 	}
 	tx->lock_time = 0;
 	tx->version = 2;
+    tx->nTime = (unsigned long)time(NULL);
 	return tx;
 }
 
@@ -418,6 +436,7 @@ struct bitcoin_tx *pull_bitcoin_tx(const tal_t *ctx,
 			tx->input[i].witness = NULL;
 	}
 	tx->lock_time = pull_le32(cursor, max);
+    tx->nTime = pull_le32(cursor, max);
 
 	/* If we ran short, fail. */
 	if (!*cursor)

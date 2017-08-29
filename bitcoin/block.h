@@ -18,6 +18,11 @@ struct bitcoin_block_hdr {
 
 struct bitcoin_block {
 	struct bitcoin_block_hdr hdr;
+    u8 * vchSig;
+    bool fStake;
+    struct sha256_double prev_stake_hash;
+    le32 prev_stake_n;
+    le32 stake_time;
 	/* tal_count shows now many */
 	struct bitcoin_tx **tx;
 };
