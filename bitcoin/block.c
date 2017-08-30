@@ -37,7 +37,7 @@ struct bitcoin_block *bitcoin_block_from_hex(const tal_t *ctx,
     pull(&p, &len, &b->prev_stake_hash, sizeof(b->prev_stake_hash));
     pull(&p, &len, &b->prev_stake_n, sizeof(b->prev_stake_n));
     // nStakeTime
-    pull(&p, &len, &b->stake_time, sizeof(b->stake_time));
+//    pull(&p, &len, &b->stake_time, sizeof(b->stake_time));
 
 	num = pull_varint(&p, &len);
 	b->tx = tal_arr(b, struct bitcoin_tx *, num);
