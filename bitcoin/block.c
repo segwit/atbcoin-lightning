@@ -32,7 +32,7 @@ struct bitcoin_block *bitcoin_block_from_hex(const tal_t *ctx,
     pull(&p, &len, &b->vchSig, tal_len(b->vchSig));
 
     // fStake
-    pull(&p, &len, &b->fStake, sizeof(b->fStake));
+//    pull(&p, &len, &b->fStake, sizeof(b->fStake));
     // prevoutStake
     pull(&p, &len, &b->prev_stake_hash, sizeof(b->prev_stake_hash));
     pull(&p, &len, &b->prev_stake_n, sizeof(b->prev_stake_n));
