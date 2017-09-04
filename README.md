@@ -103,7 +103,7 @@ To the implementation `getroute` we should wait for generate atb network new 6 b
 ```
 cli/lightning-cli getroute <recipient_id> <send_amount> 1
 # Returns:
-#{ "route" : [{ "id" : "<recipient_id>", "channel" : "<channel>", "msatoshi" : #<send_amount>, "delay" : <delay> } ] }
+#{ "route" : [{ "id" : "<recipient_id>", "channel" : "<channel>", "msatoshi" : <send_amount>, "delay" : <delay> } ] }
 
 cli/lightning-cli sendpay '[{ "id" : "<recipient_id>", "channel" : "<channel>", "msatoshi" : <send_amount>, "delay" : <delay> } ]' <rhash>
 ```
