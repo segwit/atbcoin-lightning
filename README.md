@@ -1,10 +1,3 @@
-# c-lightning: A specification compliant Lightning Network implementation in C
-
-c-lightning is a [standard compliant](https://github.com/lightningnetwork/lightning-rfc) implementation of the Lightning Network protocol.
-The Lightning Network is a scalability solution for Bitcoin, enabling secure and instant transfer of funds between any two party for any amount. 
-
-For more information about the Lightning Network please refer to http://lightning.network.
-
 ## Getting Started
 
 c-lightning currently only works on Linux (and possibly Mac OS with some tweaking), and requires a locally running `bitcoind` or `atbcoind`.
@@ -17,6 +10,7 @@ For the impatient here's the gist of it for Ubuntu and Debian:
 ```
 sudo apt-get install -y autoconf git build-essential libtool libgmp-dev libsqlite3-dev python python3
 git clone https://gitlab.pixelplex.by/614_atb/lightning.git
+git checkout -b atbcoin origin/atbcoin
 cd lightning
 make
 ```
@@ -82,7 +76,7 @@ cli/lightning-cli fundchannel <recipient_id> <channel_amount>
 
 This opens a connection and, on top of that connection, then opens a channel.
 You can check the status of the channel using `cli/lightning-cli getpeers`.
-The funding transaction needs to confirm in order for the channel to be usable, so wait generate new block in atb network, and once that is complete it `getpeers` should say that the status is in _CHANNELD_NORMAL_. 
+The funding transaction needs to confirm in order for the channel to be usable, so wait generate 3 new blocks in atb network, and once that is complete it `getpeers` should say that the status is in _CHANNELD_NORMAL_. Now, if we need we can close the channel.
 
 ### Receiving and receiving payments
 
@@ -117,6 +111,16 @@ daemon/lightning-cli close <recipient_id>
 ```
 
 After close the channel, our state change to `ONCHAIND_MUTUAL` and after generate new 5 blocks in network we can close lightning node or make other different operations with it.
+
+### Transfer of funds from `lightningd` to `Atbcoin`
+
+If we want to transfer funds from `lightning` to `Atbcoin`, we can use `withdraw. <amount_to_Atbcoin> in satoshi.
+
+````
+cli/lightning-cli withdraw <Atbcoin_address> <amount_to_Atbcoin>
+```
+
+After the commit `withdraw`, if successful, we get <raw_transaction> and <txid>.
 
 
 ## Further information
