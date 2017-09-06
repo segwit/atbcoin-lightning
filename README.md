@@ -114,13 +114,13 @@ After close the channel, our state change to `ONCHAIND_MUTUAL` and after generat
 
 ### Transfer of funds from `lightningd` to `Atbcoin`
 
-If we want to transfer funds from `lightning` to `Atbcoin`, we can use `withdraw. <amount_to_Atbcoin> in satoshi.
+If we want to transfer funds from `lightning` to `Atbcoin`, we can use `withdraw`. `<amount_to_Atbcoin>` in satoshi.
 
 ````
 cli/lightning-cli withdraw <Atbcoin_address> <amount_to_Atbcoin>
 ```
 
-After the commit `withdraw`, if successful, we get <raw_transaction> and <txid>.
+After the commit `withdraw`, if successful, we get `<raw_transaction>` and `<txid>`.
 
 
 ## Further information
