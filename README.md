@@ -10,8 +10,8 @@ For the impatient here's the gist of it for Ubuntu and Debian:
 ```
 sudo apt-get install -y autoconf git build-essential libtool libgmp-dev libsqlite3-dev python python3
 git clone https://gitlab.pixelplex.by/614_atb/lightning.git
-git checkout -b atbcoin origin/atbcoin
 cd lightning
+git checkout -b atbcoin origin/atbcoin
 make
 ```
 
